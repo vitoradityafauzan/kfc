@@ -21,7 +21,6 @@ if (!isset($_SESSION['mysesi']) || $_SESSION['mytype']!='user')
 <div class="container">
 	<div class="page-header">
 		<h3>User Panel</h3>
-		<a href="../admin/admin.php"> click</a>
 	</div>
 
 

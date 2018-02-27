@@ -24,7 +24,7 @@ if($_POST){
 
 
 
-	$sql = "INSERT INTO biodata_it (nik, fname, lname, email, phone, position, division) VALUES('$nik', '$fname', '$lname', '$email','$phno','$postion','$division')";
+	$sql = "INSERT INTO biodata_it (nik, fname, lname, email, phone, position, division) VALUES('$nik','$fname', '$lname', '$email','$phno','$postion','$division')";
 
 	if($conn->query($sql)){
 

@@ -1,13 +1,14 @@
 <?php
-session_start();
+ session_start();
 
 if (!isset($_SESSION['mysesi']) || $_SESSION['mytype']!='admin')
 {
 	header('Location: ../login/index.php');
 	exit;
   // echo "<script>window.location.assign('../login/index.php')</script>";
-}
+} 
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -23,7 +24,6 @@ if (!isset($_SESSION['mysesi']) || $_SESSION['mytype']!='admin')
 		<h3>Admin Panel</h3>
 	</div>
 
-
 	<form action="tambah.php">
 	<button type="submit" class="btn btn-primary" style="float: left;">Tambah Data</button>
 	</form><br/>
@@ -31,51 +31,40 @@ if (!isset($_SESSION['mysesi']) || $_SESSION['mytype']!='admin')
 	<form action="../login/index.php">
 	<button type="submit" class="btn btn-link" style="float: right;">Logout</button>
 	</form>
-
-
    
 	<div class="row">
 		<div class="col-lg-12">
-			<table class="table table table-bordered table-hover table-responsive">
+			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
 						<th>NIK</th>
-						<th>Full Name</th>
-						<th>Description</th>
+						<th>Name</th>
+						<th>Action</th>
 					</tr>
 				</thead>
-
 				<tbody>
 					<?php 
-					$dbhost = 'localhost';
-					$dbuser = 'root';
-					$dbpass = '';
-					$dbname = 'magang';
+					include "dbconfig.php";
 
-
-					$conn = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
-
-					if($conn->connect_error){
-						die('Connection Error :'.$conn->connect_error);
-					}
 					$sql = "SELECT * FROM biodata_it";
 					$data = $conn->query($sql);
 					while($row = $data->fetch_array()){
-
+            
 					 ?>
 					 <tr>
-					 	<td>
-					 		<?php echo $row['nik'];?>
+					 	<td><?php echo $row['nik']."&nbsp;";?>
 					 	</td>
+
 					 	<td>
 					 		<?php echo $row['fname']."&nbsp;".$row['lname'];?>
 					 	</td>
 
 					 	<td>
-					 		<button data-toggle="modal" data-target="#view-modal" data-id="<?php echo $row['id'];?>" id="getUser" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-eye-open"></i>View</button>&nbsp;
+					 		<button data-toggle="modal" data-target="#view-modal" data-id="<?php echo $row['id'];?>" id="getUser" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-envelope"> </i>View</button>&nbsp;
 
-                            <button data-id="<?php echo $row['id'];?>" class="btn delete_data"><i class="glyphicon glyphicon-trash"></i>Delete</button>&nbsp;
-					 		
+                            <button data-id="<?php echo $row['id'];?>" class="btn btn-sm delete_product"><i class="glyphicon glyphicon-trash"></i>Delete</button>&nbsp;
+
+					 		<button href="#" class='open_modal btn btn-sm btn-primary' id='<?php echo $row['nik']; ?>'> <i class="glyphicon glyphicon-pencil"></i> Edit</button>&nbsp;
         			 	</td>
 						</tr>
 					 <?php
@@ -83,9 +72,12 @@ if (!isset($_SESSION['mysesi']) || $_SESSION['mytype']!='admin')
 					?>
 					
 				</tbody>
-
 			</table>
 		</div>
+	</div>
+
+	<!-- Modal Popup untuk Edit--> 
+	<div id="ModalEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	</div>
 
 
@@ -98,7 +90,6 @@ if (!isset($_SESSION['mysesi']) || $_SESSION['mytype']!='admin')
 	                	<i class="glyphicon glyphicon-user"></i> User Profile
 	                </h4> 
 				</div>
-
 				<div class="modal-body">
 					<div id="modal-loader" style="display: none; text-align: center;">
 						<img src="">
@@ -112,7 +103,8 @@ if (!isset($_SESSION['mysesi']) || $_SESSION['mytype']!='admin')
                             	<div class="table-responsive">
                             	
                                 <table class="table table-striped table-bordered">
-                                <tr>
+                           		
+                           		<tr>
                             	<th>NIK</th>
                             	<td id="txt_nik"></td>
                                 </tr>
@@ -158,22 +150,19 @@ if (!isset($_SESSION['mysesi']) || $_SESSION['mytype']!='admin')
 					</div>
 
 				</div>
-
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+					<button class="close" type="button" data-dismiss="modal" aria-hidden="true">Close</button>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-
 
 
 <script src="../assets/jquery-1.12.4.min.js"></script>
 <script src="../assets/js/bootstrap.min.js"></script>
 <script src="../assets/bootbox.min.js"></script>
 
-<!-- INI SCRIPT VIEW -->
+
 <script type="text/javascript">
 $(document).ready(function(){
 	$(document).on('click','#getUser', function(e){
@@ -189,6 +178,7 @@ $(document).ready(function(){
 		}).done(function(data){
 			console.log(data);
 			$('#dynamic-content').show(); // show dynamic div
+			$('#txt_nik').html(data.nik);
 			$('#txt_nik').html(data.nik);
 			$('#txt_fname').html(data.fname);
 			$('#txt_lname').html(data.lname);
@@ -209,11 +199,12 @@ function Delete_fnc(id){
 }*/
 </script>
 
-<!--	INI SCRIPT DELETE -->
+<!--Delete JavaScript-->
+
 <script>
 	$(document).ready(function(){
 		
-		$('.delete_data').click(function(e){
+		$('.delete_product').click(function(e){
 			
 			e.preventDefault();
 			
@@ -222,7 +213,7 @@ function Delete_fnc(id){
 			
 			bootbox.dialog({
 			  message: "Are you sure you want to Delete ?",
-			  title: "<i class='glyphicon glyphicon-trash'></i> Delete Data",
+			  title: "<i class='glyphicon glyphicon-trash'></i> Delete",
 			  buttons: {
 				success: {
 				  label: "No",
@@ -235,30 +226,6 @@ function Delete_fnc(id){
 				  label: "Delete!",
 				  className: "btn-danger",
 				  callback: function() {
-					  
-					  /*
-					  
-					  using $.ajax();
-					  
-					  $.ajax({
-						  
-						  type: 'POST',
-						  url: 'delete.php',
-						  data: 'delete='+pid
-						  
-					  })
-					  .done(function(response){
-						  
-						  bootbox.alert(response);
-						  parent.fadeOut('slow');
-						  
-					  })
-					  .fail(function(){
-						  
-						  bootbox.alert('Something Went Wrong ....');
-						  						  
-					  })
-					  */
 					  
 					  
 					  $.post('delete.php', { 'delete':pid })
@@ -279,6 +246,25 @@ function Delete_fnc(id){
 		});
 		
 	});
+</script>
+
+
+<!-- Javascript untuk popup modal Edit--> 
+<script type="text/javascript">
+   $(document).ready(function () {
+   $(".open_modal").click(function(e) {
+      var m = $(this).attr("id");
+		   $.ajax({
+    			   url: "modal_edit.php",
+    			   type: "GET",
+    			   data : {nik: m,},
+    			   success: function (ajaxData){
+      			   $("#ModalEdit").html(ajaxData);
+      			   $("#ModalEdit").modal('show',{backdrop: 'true'});
+      		   }
+    		   });
+        });
+      });
 </script>
 
 </body>

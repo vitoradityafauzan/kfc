@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html">
-	<title>Add data</title>
+	<title>Submit PHP Forms Without Refresh Using jQuery and AJAX</title>
 	<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
 	<style>
 		.wrapper{
@@ -41,7 +41,7 @@
 	<div class="container">
 		<div class="page-header">
 			<h1>
-				Add new data
+				AJAX Form Submit
 			</h1>
 		</div>
 		
@@ -56,6 +56,7 @@
 						<div class="form-group">
 							<input type="text" class="form-control" name="txt_nik" id="nik" placeholder="NIK" required/>
 						</div>
+
 						<div class="form-group">
 							<input type="text" class="form-control" name="txt_fname" id="fname" placeholder="First Name" required/>
 						</div>
@@ -65,18 +66,18 @@
 						</div>
 
 						<div class="form-group">
-							<input type="text" class="form-control" name="txt_email" id="email" placeholder="E-Mail" required/>
+							<input type="text" class="form-control" name="txt_email" id="email" placeholder="Your Mail" required/>
 						</div>
 
 						<div class="form-group">
-							<input type="text" class="form-control" name="txt_mobile" id="mobile" placeholder="Mobile" required/>
+							<input type="text" class="form-control" name="txt_mobile" id="phone" placeholder="Mobile" required/>
 						</div>
 						<div class="form-group">
 							<input type="text" class="form-control" name="txt_position" id="position" placeholder="Position" required/>
 						</div>
 						<div class="form-group">
 							<label for="sel1"> Select Divison : </label>
-							<select class="form-control" id="sel1" name="txt_division">
+							<select class="form-control" id="sel1" name="txt_division" id="sel1">
 								<option>IT Support</option>
 								<option>IT Infrastruktur</option>
 								<option>IT Electronic Data Processing</option>
